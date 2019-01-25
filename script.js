@@ -49,11 +49,15 @@ function ajaxCall(params)
 
                         break;
 
+                    default:
+                        alert("Parametre non géré");
+                        break;
+
                 }
 
 
             }
-        }
+        };
 
         xhttp.open("GET",url,true);
 

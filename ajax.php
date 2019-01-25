@@ -40,7 +40,7 @@ if ($conn->connect_error) {
 
         while($data = $result->fetch_assoc())
         {
-            $i++;
+
             $arr[] = $data;
 
         }
