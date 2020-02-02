@@ -1,3 +1,5 @@
+
+
 /**
  * Created by sstienface on 25/01/2019.
  */
@@ -24,7 +26,7 @@ function ajaxCall(params)
 
         xhttp.onreadystatechange = function()
         {
-            if(this.readyState == 4 && this.status == 200)
+            if(this.readyState === 4 && this.status === 200)
             {
                 document.getElementById('ajaxContent').innerHTML = "";
                 var json = JSON.parse(this.responseText);
@@ -36,16 +38,21 @@ function ajaxCall(params)
                         for(var i in json)
                         {
                             var div = document.createElement('div');
-                            div.innerHTML = "<h1>"+json[i].product_name+"</h1>";
-                            div.innerHTML+= "<p>"+json[i].product_description+"</p>";
+                            div.innerHTML = "<h1>"+ JSON[i].product_name+"</h1>";
+                            div.innerHTML+= "<p>"+ JSON[i].product_description+"</p>";
                             document.getElementById('ajaxContent').appendChild(div);
-
                         }
 
                         break;
                     case"affPurchased":
-
                         //Votre code ici
+                        for (var i in json){
+
+                            var div1 = document.createElement('div1');
+                            div1.innerHTML = "<h1>"+json[i].product_name+"</h1>";
+                            div1.innerHTML = "<h2>"+json[i].buyer_name+"</h2>";
+                            document.getElementById('ajaxContent').appendChild(div1);
+                        }
 
                         break;
 
@@ -59,7 +66,18 @@ function ajaxCall(params)
             }
         };
 
-        xhttp.open("GET",url,true);
+        xhttp.open("GET",'ajax.php',true);
+
+       //This function will return ok if connection ok and error if not
+        xhttp.onload = function(){
+            if(xhttp.status >= 200 && xhttp.status < 400){
+                console.log('connection ok')
+            }else{
+                console.log('We\'v connected to the server but it return an error');
+                var dataShow = JSON.parse("SELECT product_name, buyer_name FROM `products`,`products_purchased` WHERE 1")
+                console.log(dataShow);
+            }
+        };
 
         xhttp.send();
 
@@ -85,3 +103,12 @@ document.getElementById('affProducts').addEventListener('click', function()
 
 
 //Ajouter un event listener pour detecter le click sur le second lien
+document.getElementById('affPurchased').addEventListener('click',function(){
+    ajaxCall(
+        {'url' : 'ajax.php',
+        'parameters': [
+            {'action' : 'affPurchased'}
+            ]
+        }
+    )
+});
